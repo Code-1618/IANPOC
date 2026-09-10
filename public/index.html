@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Products POC</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 500px;
+        }
+
+        th, td {
+            border: 1px solid #333;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #eeeeee;
+        }
+
+        .disclaimer {
+            margin-top: 30px;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Food Products</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Food</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+
+        <tbody id="foodTableBody">
+        </tbody>
+    </table>
+
+    <p class="disclaimer">
+        This application is student work and is only for demonstrating web development skills.
+    </p>
+
+    <script>
+        // Fetch all food products from the backend.
+        async function loadFoods() {
+            try {
+                const response = await fetch("/foods");
+                const foods = await response.json();
+
+                const tableBody = document.getElementById("foodTableBody");
+
+                // Add one table row for each food item.
+                foods.forEach(food => {
+                    const row = document.createElement("tr");
+
+                    row.innerHTML = `
+                        <td>${food.id}</td>
+                        <td>${food.name}</td>
+                        <td>$${food.price.toFixed(2)}</td>
+                    `;
+
+                    tableBody.appendChild(row);
+                });
+            } catch (error) {
+                console.error("Unable to load food products:", error);
+            }
+        }
+
+        loadFoods();
+    </script>
+</body>
+</html>
